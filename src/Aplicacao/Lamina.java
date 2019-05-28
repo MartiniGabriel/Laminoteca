@@ -2,6 +2,7 @@ package Aplicacao;
 
 public class Lamina {
 	
+	String id;
 	String codigoTubo;
 	String codSetor;
 	String descSetor;
@@ -13,6 +14,12 @@ public class Lamina {
 	String codPosicao;
 	
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getCodigoTubo() {
 		return codigoTubo;
 	}

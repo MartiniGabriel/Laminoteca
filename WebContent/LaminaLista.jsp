@@ -1,5 +1,10 @@
+<%@page import="Aplicacao.Lamina"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="CRUD.LaminaCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,9 +23,21 @@
 
 <!-- Custom styles for this template -->
 <link href="css/simple-sidebar.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.quicksearch/2.3.1/jquery.quicksearch.js"></script>
 
 </head>
+<%
+	LaminaCRUD l = new LaminaCRUD();
+	List<Lamina> lista = new ArrayList();
 
+	lista = l.select();
+
+	System.out.println("teste");
+%>
 <body>
 
 	<div class="d-flex" id="wrapper">
@@ -123,58 +140,64 @@
 				<h1 class="mt-4">Listagem de Lâmina</h1>
 				<p>Catálogo de lâminas do sistema.</p>
 				<p></p>
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Código Tubo</th>
-							<th scope="col">Setor</th>
-							<th scope="col">Material</th>
-							<th scope="col">Diagnóstico</th>
-							<th scope="col">Maleta</th>
-							<th scope="col">Posição</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="card-body">
+					<div class="table-responsive">
+						<div class="form-group input-group">
+							<span class="input-group-addon"><i
+								class="glyphicon glyphicon-search"></i></span> <input name="consulta"
+								id="txt_consulta" placeholder="Consultar" type="text"
+								class="form-control">
+						</div>
+						<table class="table" id="tabela">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Código Tubo</th>
+									<th scope="col">Setor</th>
+									<th scope="col">Material</th>
+									<th scope="col">Diagnóstico</th>
+									<th scope="col">Maleta</th>
+									<th scope="col">Posição</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+									System.out.println("teste " + lista.size());
+									for (int i = 0; i < lista.size(); i++) {
+										out.print("<tr>");
+										out.print("<th scope=\"row\">" + lista.get(i).getId() + "</th>");
+										out.print("<td>" + lista.get(i).getCodigoTubo() + "</td>");
+										out.print("<td>" + lista.get(i).getDescSetor() + "</td>");
+										out.print("<td>" + lista.get(i).getDescMaterial() + "</td>");
+										out.print("<td>" + lista.get(i).getDescDiagnostico() + "</td>");
+										out.print("<td>" + lista.get(i).getCodMaleta() + "</td>");
+										out.print("<td>" + lista.get(i).getCodPosicao() + "</td>");
+									}
+								%>
+							</tbody>
+						</table>
+						<script>
+							$('input#txt_consulta').quicksearch(
+									'table#tabela tbody tr');
+						</script>
+					</div>
+				</div>
+				<!-- /#page-content-wrapper -->
+
 			</div>
-		</div>
-		<!-- /#page-content-wrapper -->
+			<!-- /#wrapper -->
 
-	</div>
-	<!-- /#wrapper -->
+			<!-- Bootstrap core JavaScript -->
+			<script src="vendor/jquery/jquery.min.js"></script>
+			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-	<!-- Bootstrap core JavaScript -->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Menu Toggle Script -->
-	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-	</script>
-
+			<!-- Menu Toggle Script -->
+			<script>
+				$("#menu-toggle").click(function(e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});
+			</script>
 </body>
 
 </html>
