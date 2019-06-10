@@ -1,3 +1,5 @@
+<%@page import="Aplicacao.Maleta"%>
+<%@page import="CRUD.MaletaCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -20,7 +22,52 @@
 <link href="css/simple-sidebar.css" rel="stylesheet">
 
 </head>
+<%
+	String descMaleta = request.getParameter("descMaleta");
+	String qtdPosicoes = request.getParameter("qtdPosicoes");
+		
+		System.out.println("desc: " + descMaleta + " pos: " + qtdPosicoes);
 
+	String cad = request.getParameter("cad");
+	String up = request.getParameter("up");
+	String cod = request.getParameter("cod");
+	String del = request.getParameter("del");
+
+	if (cad != null) {
+		Maleta m = new Maleta();
+		m.setDescMaleta(descMaleta);
+		m.setQtdPosicoes(qtdPosicoes);
+		MaletaCRUD mc = new MaletaCRUD();
+		if (mc.insert(m)) {
+			out.print("<script>alert(\"Maleta cadastrado com sucesso!\");</script>");
+		} else {
+			out.print("<script>alert(\"Erro ao cadastrar maleta!!\");</script>");
+		}
+	}
+	if (cod != null && descMaleta != null && up.equals("2")) {
+		Maleta m = new Maleta();
+		m.setDescMaleta(descMaleta);
+		m.setCodMaleta(cod);
+		MaletaCRUD sc = new MaletaCRUD();
+			if (sc.update(m)) {
+				out.print("<script>alert(\"Maleta atualizada com sucesso!\");</script>");
+			} else {
+				out.print("<script>alert(\"Erro ao atualizar maleta!!\");</script>");
+			}
+		
+	}
+	if (del != null && cod != null) {
+		Maleta m = new Maleta();
+		m.setDescMaleta(descMaleta);
+		m.setCodMaleta(cod);
+		MaletaCRUD mc = new MaletaCRUD();
+		if (mc.delete(m)) {
+			out.print("<script>alert(\"Maleta deletada com sucesso!\");</script>");
+		} else {
+			out.print("<script>alert(\"Erro ao deletar maleta!!\");</script>");
+		}
+	}
+%>
 <body>
 
 	<div class="d-flex" id="wrapper">
@@ -124,22 +171,36 @@
 				<h1 class="mt-4">Cadastro de Maletas</h1>
 				<p>Informe abaixo as informações da maleta a ser cadastrada.</p>
 				<p></p>
-				<form>
+				<form method="POST" action="MaletaCadastro.jsp?<%if(up!=null){out.print("up=2&cod="+cod);}else{out.print("cad=0");}%>">
 					<div class="form-row col-md-6">
 						<div class="form-group my-1 mr-2">
 							<label for="inputCdTubo">Descrição</label> <input type="text"
 								class="form-control" id="inputCdTubo"
-								placeholder="Descrição da Maleta">
+								placeholder="Descrição da Maleta" name="descMaleta" <%
+									if(cod!=null&&up!=null){
+										Maleta m = new Maleta();
+										m.setCodMaleta(cod);
+										MaletaCRUD mc = new MaletaCRUD();
+										m = mc.selectMaleta(m);
+										out.print(" value=\"" + m.getDescMaleta() + "\"");
+									}
+								%>>
 						</div>
 					</div>
 					<div class="form-row col-md-6">
 						<label class="form-group my-1 mr-2" for="selectSetor">Quantidade de Posições</label>
 						<div class="col-10">
-							<input class="form-control" type="number" value="50" id="example-number-input">
+							<input class="form-control" type="number" value="50" id="example-number-input" name="qtdPosicoes">
 						</div>
 					</div>
 					<div class="form-row col-md-6">
-						<button type="submit" class="btn btn-success">Cadastrar</button>
+						<%
+							if (up != null) {
+								out.print("<button type=\"submit\" class=\"btn btn-success\">Atualizar</button>");
+							} else {
+								out.print("<button type=\"submit\" class=\"btn btn-success\">Cadastrar</button>");
+							}
+						%>
 					</div>
 				</form>
 			</div>

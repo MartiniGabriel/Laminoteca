@@ -1,3 +1,7 @@
+<%@page import="Aplicacao.Maleta"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="CRUD.MaletaCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -20,7 +24,12 @@
 <link href="css/simple-sidebar.css" rel="stylesheet">
 
 </head>
+<%
+	MaletaCRUD mc = new MaletaCRUD();
+	List<Maleta> lista = new ArrayList();
 
+	lista = mc.select();
+%>
 <body>
 
 	<div class="d-flex" id="wrapper">
@@ -129,24 +138,22 @@
 							<th scope="col">ID</th>
 							<th scope="col">Descrição</th>
 							<th scope="col">Qtd Posições</th>
+							<th scope="col">Alterar</th>
+							<th scope="col">Excluir</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Microbiologia</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Hematologia</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Hematologia</td>
-							<td>50</td>
-						</tr>
+						<%
+							for (int i = 0; i < lista.size(); i++) {
+								out.print("<tr>");
+								out.print("<th scope=\"row\">" + lista.get(i).getCodMaleta() + "</th>");
+								out.print("<td>" + lista.get(i).getDescMaleta() + "</td>");
+								out.print("<td>"+lista.get(i).getQtdPosicoes()+"</td>");
+								out.write("<td><a href=\"MaletaCadastro.jsp?up=0&cod=" + lista.get(i).getCodMaleta() + "\"><button type=\"button\" class=\"btn btn-primary\">Alterar</button></a></td>");
+								out.write("<td><a href=\"MaletaCadastro.jsp?del=0&cod=" + lista.get(i).getCodMaleta() + "\"><button type=\"button\" class=\"btn btn-danger\">Excluir</button></a></td>");								
+								out.print("</tr>");
+							}
+						%>
 					</tbody>
 				</table>
 			</div>

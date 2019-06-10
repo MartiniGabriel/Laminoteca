@@ -36,7 +36,6 @@
 
 	lista = l.select();
 
-	System.out.println("teste");
 %>
 <body>
 
@@ -161,8 +160,27 @@
 								</tr>
 							</thead>
 							<tbody>
+							<tr>
+								<td scope="row">1</td>
+								<td>180003569302</td>
+								<td>Hematologia</td>
+								<td>Sangue EDTA</td>
+								<td>Leucemia Mielóide Aguda (LMA)</td>
+								<td>Maleta 1</td>
+								<td>Posição 1</td>
+							</tr>
+							<tr>
+								<td scope="row">1</td>
+								<td>180009638502</td>
+								<td>Hematologia</td>
+								<td>Sangue EDTA</td>
+								<td>Leucemia Mielóide Crônica (LMC)</td>
+								<td>Maleta 1</td>
+								<td>Posição 2</td>
+							</tr>
+							
 								<%
-									System.out.println("teste " + lista.size());
+								/*
 									for (int i = 0; i < lista.size(); i++) {
 										out.print("<tr>");
 										out.print("<th scope=\"row\">" + lista.get(i).getId() + "</th>");
@@ -173,6 +191,7 @@
 										out.print("<td>" + lista.get(i).getCodMaleta() + "</td>");
 										out.print("<td>" + lista.get(i).getCodPosicao() + "</td>");
 									}
+							*/
 								%>
 							</tbody>
 						</table>

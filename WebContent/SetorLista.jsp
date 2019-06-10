@@ -1,3 +1,7 @@
+<%@page import="Aplicacao.Setor"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="CRUD.SetorCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -15,11 +19,20 @@
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <!-- Custom styles for this template -->
 <link href="css/simple-sidebar.css" rel="stylesheet">
 
+
 </head>
+
+<%
+	SetorCRUD s = new SetorCRUD();
+	List<Setor> lista = new ArrayList();
+
+	lista = s.select();
+%>
 
 <body>
 
@@ -112,7 +125,7 @@
 							aria-expanded="false"> Perfil </a>
 							<div class="dropdown-menu dropdown-menu-right"
 								aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#">Usuário</a> 
+								<a class="dropdown-item" href="#">Usuário</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#">Sair</a>
 							</div></li>
@@ -128,21 +141,21 @@
 						<tr>
 							<th scope="col">ID</th>
 							<th scope="col">Descrição</th>
+							<th scope="col">Atualizar</th>
+							<th scope="col">Excluír</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Setor 1</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Setor 2</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Setor 3</td>
-						</tr>
+						<%
+							for (int i = 0; i < lista.size(); i++) {
+								out.print("<tr>");
+								out.print("<th scope=\"row\">" + lista.get(i).getCodSetor() + "</th>");
+								out.print("<td>" + lista.get(i).getDescSetor() + "</td>");
+								out.write("<td><a href=\"SetorCadastro.jsp?up=0&cod=" + lista.get(i).getCodSetor() + "\"><button type=\"button\" class=\"btn btn-primary\">Alterar</button></a></td>");
+								out.write("<td><a href=\"SetorCadastro.jsp?del=0&cod=" + lista.get(i).getCodSetor() + "\"><button type=\"button\" class=\"btn btn-danger\">Excluír</button></a></td>");								
+								out.print("</tr>");
+							}
+						%>
 					</tbody>
 				</table>
 			</div>
