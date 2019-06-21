@@ -31,10 +31,10 @@
 
 </head>
 <%
-	LaminaCRUD l = new LaminaCRUD();
-	List<Lamina> lista = new ArrayList();
-
-	lista = l.select();
+	List<Lamina> lista = new ArrayList<Lamina>();
+	LaminaCRUD lc = new LaminaCRUD();
+	
+	lista = lc.select();
 
 %>
 <body>
@@ -157,30 +157,12 @@
 									<th scope="col">Diagnóstico</th>
 									<th scope="col">Maleta</th>
 									<th scope="col">Posição</th>
+									<th scope="col">Alterar</th>
+									<th scope="col">Excluir</th>
 								</tr>
 							</thead>
 							<tbody>
-							<tr>
-								<td scope="row">1</td>
-								<td>180003569302</td>
-								<td>Hematologia</td>
-								<td>Sangue EDTA</td>
-								<td>Leucemia Mielóide Aguda (LMA)</td>
-								<td>Maleta 1</td>
-								<td>Posição 1</td>
-							</tr>
-							<tr>
-								<td scope="row">1</td>
-								<td>180009638502</td>
-								<td>Hematologia</td>
-								<td>Sangue EDTA</td>
-								<td>Leucemia Mielóide Crônica (LMC)</td>
-								<td>Maleta 1</td>
-								<td>Posição 2</td>
-							</tr>
-							
 								<%
-								/*
 									for (int i = 0; i < lista.size(); i++) {
 										out.print("<tr>");
 										out.print("<th scope=\"row\">" + lista.get(i).getId() + "</th>");
@@ -188,10 +170,14 @@
 										out.print("<td>" + lista.get(i).getDescSetor() + "</td>");
 										out.print("<td>" + lista.get(i).getDescMaterial() + "</td>");
 										out.print("<td>" + lista.get(i).getDescDiagnostico() + "</td>");
-										out.print("<td>" + lista.get(i).getCodMaleta() + "</td>");
-										out.print("<td>" + lista.get(i).getCodPosicao() + "</td>");
+										out.print("<td>" + "Maleta " + lista.get(i).getCodMaleta() + "</td>");
+										out.print("<td>" + "Posição " + lista.get(i).getCodPosicao() + "</td>");
+										out.write("<td><a href=\"LaminaCadastro.jsp?up=0&cod=" + lista.get(i).getId()
+												+ "\"><button type=\"button\" class=\"btn btn-primary\">Alterar</button></a></td>");
+										out.write("<td><a href=\"LaminaCadastro.jsp?del=0&cod=" + lista.get(i).getId()
+												+ "\"><button type=\"button\" class=\"btn btn-danger\">Excluir</button></a></td>");
+										out.print("</tr>");
 									}
-							*/
 								%>
 							</tbody>
 						</table>

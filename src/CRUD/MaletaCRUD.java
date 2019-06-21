@@ -18,14 +18,18 @@ public class MaletaCRUD {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into maleta");
 		sql.append(
-				" (descMaleta, qtdPosicoes) values (");
+				" (descMaleta, codMaleta, codPosicao, statusPosicao) values (");
 	
 		Connection conn = Conexao.getConexaoMySQL();
 
 		sql.append("\'");
 		sql.append(m.getDescMaleta());
 		sql.append("\', \'");
-		sql.append(m.getQtdPosicoes());
+		sql.append(m.getCodMaleta());
+		sql.append("\', \'");
+		sql.append(m.getCodPosicao());
+		sql.append("\', \'");
+		sql.append("Disponível");
 		sql.append("\');");
 
 		System.out.println(sql.toString());
@@ -56,6 +60,9 @@ public class MaletaCRUD {
 
 		sql.append("\'");
 		sql.append(m.getDescMaleta());
+		sql.append("\', ");
+		sql.append("statusPosicao=\'");
+		sql.append(m.getStatusPosicao());
 		sql.append("\' where id='");
 		sql.append(m.getCodMaleta());
 		sql.append("';");
@@ -122,9 +129,10 @@ public class MaletaCRUD {
 		
 		while (resultado.next()) {
 			Maleta linha = new Maleta();
-			linha.setCodMaleta(resultado.getString("id"));
+			linha.setCodMaleta(resultado.getString("codMaleta"));
 			linha.setDescMaleta(resultado.getString("descMaleta"));
-			linha.setQtdPosicoes(resultado.getString("qtdPosicoes"));
+			linha.setCodPosicao(resultado.getString("codPosicao"));
+			linha.setStatusPosicao(resultado.getString("statusPosicao"));
 			lista.add(linha);
 		}
 
@@ -160,13 +168,13 @@ public class MaletaCRUD {
 		
 		ResultSet resultado = comando.executeQuery();
 
+		Maleta linha = new Maleta();
 		
 		while (resultado.next()) {
-			Maleta linha = new Maleta();
-			linha.setCodMaleta(resultado.getString("id"));
+			linha.setCodMaleta(resultado.getString("codMaleta"));
 			linha.setDescMaleta(resultado.getString("descMaleta"));
-			linha.setQtdPosicoes(resultado.getString("qtdPosicoes"));
-			return linha;
+			linha.setCodPosicao(resultado.getString("codPosicao"));
+			linha.setStatusPosicao(resultado.getString("statusPosicao"));
 		}
 
 		resultado.close();
@@ -180,6 +188,31 @@ public class MaletaCRUD {
 			return null;
 		}
 		
+	}
+	
+	public void insertPosicoesMaleta(Maleta m) {
+		for(int i=0;i<Integer.parseInt(m.getQtdPosicoes());i++) {
+			m.setCodPosicao(Integer.toString(i+1));
+			try {
+				insert(m);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String getUltimaMaleta() {
+		List<Maleta> lista = new ArrayList<Maleta>();
+		lista = select();
+		
+		String maior = "0";
+		for(int i=0;i<lista.size();i++) {
+			if(Integer.parseInt(lista.get(i).getCodMaleta())>Integer.parseInt(maior)) {
+				maior = lista.get(i).getCodMaleta();
+			}
+		}
+		return maior;
 	}
 
 }

@@ -16,13 +16,15 @@ public class LaminaCRUD {
 	public boolean insert(Lamina l) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("insert into USUARIO");
+		sql.append("insert into LAMINA");
 		sql.append(
-				" (codSetor, codMaterial, descDiagnostico, codMaleta, codPosicao) values (");
+				" (codTubo, codSetor, codMaterial, descDiagnostico, codMaleta, codPosicao) values (");
 	
 		Connection conn = Conexao.getConexaoMySQL();
 
 		sql.append("\'");
+		sql.append(l.getCodigoTubo());
+		sql.append("\', \'");
 		sql.append(l.getCodSetor());
 		sql.append("\', \'");
 		sql.append(l.getCodMaterial());
@@ -34,6 +36,8 @@ public class LaminaCRUD {
 		sql.append(l.getCodPosicao());
 		sql.append("\');");
 
+		System.out.println(sql.toString());
+		
 		Statement st;
 		try {
 			st = conn.createStatement();
@@ -51,26 +55,29 @@ public class LaminaCRUD {
 	public boolean update(Lamina l) {
 		/* Define a SQL */
 		StringBuilder sql = new StringBuilder();
-		sql.append("update USUARIO set");
-		sql.append(
-				" (codSetor, codMaterial, descDiagnostico, codMaleta, codPosicao) values (");
-
+		sql.append("update lamina set");
+		
 		/* Abre a conexão que criamos o retorno é armazenado na variavel conn */
 		Connection conn = Conexao.getConexaoMySQL();
 
-
-		sql.append("\'");
+		sql.append(" codTubo = \'");
+		sql.append(l.getCodigoTubo());
+		sql.append("\', codSetor = \'");
 		sql.append(l.getCodSetor());
-		sql.append("\', \'");
+		sql.append("\', codMaterial = \'");
 		sql.append(l.getCodMaterial());
-		sql.append("\', \'");
+		sql.append("\', descDiagnostico = \'");
 		sql.append(l.getDescDiagnostico());
-		sql.append("\', \'");
+		sql.append("\', codMaleta = \'");
 		sql.append(l.getCodMaleta());
-		sql.append("\', \'");
+		sql.append("\', codPosicao = \'");
 		sql.append(l.getCodPosicao());
-		sql.append("\');");
+		sql.append("\'"
+				+ " where id = "
+				+  l.getId() 
+				+ ";");
 
+		System.out.println(sql.toString());
 
 		Statement st;
 		try {
@@ -90,14 +97,15 @@ public class LaminaCRUD {
 	public boolean delete(Lamina l) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("delete from USUARIO");
-		sql.append("where id ='");
+		sql.append("delete from lamina");
+		sql.append(" where id ='");
 		sql.append(l.getId());
 		sql.append("';");
 		
 		
 		Connection conn = Conexao.getConexaoMySQL();
 		
+		System.out.println(sql.toString());
 		
 		Statement st;
 		try {
@@ -122,8 +130,12 @@ public class LaminaCRUD {
 	public List<Lamina> select() {
 		System.out.println("teste");
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT * ");
-		sql.append("FROM LAMINA;");
+		sql.append("SELECT l.id, l.codTubo, l.codSetor, s.descSetor, l.codMaterial, m.descMaterial, l.descDiagnostico, l.dataCadastro, l.codMaleta, l.codPosicao \r\n" + 
+				"from lamina l \r\n" + 
+				"	JOIN material m\r\n" + 
+				"		ON m.id = l.codMaterial\r\n" + 
+				"	JOIN setor s\r\n" + 
+				"		ON s.id = l.codSetor\r\n");
 		
 		Connection conn = Conexao.getConexaoMySQL();
 		PreparedStatement comando;
@@ -134,15 +146,16 @@ public class LaminaCRUD {
 		ResultSet resultado = comando.executeQuery();
 
 		List<Lamina> lista = new ArrayList<Lamina>();
-		Lamina linha = new Lamina();
 		
-		System.out.println(resultado.toString());
-
+		
 		while (resultado.next()) {
-			System.out.println("!" + resultado.getString("descDiagnostico"));
+			Lamina linha = new Lamina();
 			linha.setId(resultado.getString("ID"));
+			linha.setCodigoTubo(resultado.getString("codTubo"));
 			linha.setCodSetor(resultado.getString("codSetor"));
+			linha.setDescSetor(resultado.getString("descSetor"));
 			linha.setCodMaterial(resultado.getString("codMaterial"));
+			linha.setDescMaterial(resultado.getString("descMaterial"));
 			linha.setDescDiagnostico(resultado.getString("descDiagnostico"));
 			linha.setDataCadastro(resultado.getString("dataCadastro"));
 			linha.setCodMaleta(resultado.getString("codMaleta"));
@@ -163,5 +176,20 @@ public class LaminaCRUD {
 		
 	}
 	
+	public Lamina buscaLamina(Lamina l) {
+		
+		List<Lamina> lista = new ArrayList<Lamina>();
+		lista = select();
+		
+		for(int i=0;i<lista.size();i++){
+			if(lista.get(i).getId().equals(l.getId())) {
+				return lista.get(i);
+			}
+		}
+		
+		
+		return null;
+		
+	}
 
 }

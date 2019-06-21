@@ -1,9 +1,11 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="Aplicacao.Setor"%>
+<%@page import="Aplicacao.Lamina"%>
 <%@page import="Aplicacao.Material"%>
 <%@page import="Aplicacao.Maleta"%>
 <%@page import="CRUD.MaletaCRUD"%>
+<%@page import="CRUD.LaminaCRUD"%>
 <%@page import="CRUD.SetorCRUD"%>
 <%@page import="CRUD.MaterialCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -29,13 +31,73 @@
 
 </head>
 <%
-	String descMaleta = request.getParameter("descMaleta");
-	String qtdPosicoes = request.getParameter("qtdPosicoes");
-
+	
+	String codTubo = request.getParameter("codTubo");
+	String codSetor = request.getParameter("setor");
+	String codMaterial = request.getParameter("material");
+	String codMaleta = request.getParameter("maleta");
+	String codPosicao = request.getParameter("posicao");
+	String descDiagnostico = request.getParameter("descDiagnostico");
+	
 	String cad = request.getParameter("cad");
 	String up = request.getParameter("up");
 	String cod = request.getParameter("cod");
 	String del = request.getParameter("del");
+	
+	Lamina l = new Lamina();
+	
+	if(cod!=null){
+		l.setId(cod);
+		LaminaCRUD lc = new LaminaCRUD();
+		l = lc.buscaLamina(l);
+		System.out.println("Cod: " + cod);
+	}
+
+	if (cad != null) {
+		
+		l.setCodigoTubo(codTubo);
+		l.setCodSetor(codSetor);
+		l.setCodMaterial(codMaterial);
+		l.setCodMaleta(codMaleta);
+		l.setCodPosicao(codPosicao);
+		l.setDescDiagnostico(descDiagnostico);
+		
+		LaminaCRUD lc = new LaminaCRUD();
+		if (lc.insert(l)) {
+			out.print("<script>alert(\"Lamina cadastrada com sucesso!\");</script>");
+		} else {
+			out.print("<script>alert(\"Erro ao cadastrar lamina!!\");</script>");
+		}
+	}
+	if (cod != null && codTubo != null && up.equals("2")) {
+		
+		l.setCodigoTubo(codTubo);
+		l.setCodSetor(codSetor);
+		l.setCodMaterial(codMaterial);
+		l.setCodMaleta(codMaleta);
+		l.setCodPosicao(codPosicao);
+		l.setDescDiagnostico(descDiagnostico);
+		
+		LaminaCRUD lc = new LaminaCRUD();
+			if (lc.update(l)) {
+				out.print("<script>alert(\"Lamina atualizada com sucesso!\");</script>");
+			} else {
+				out.print("<script>alert(\"Erro ao atualizar Lamina!!\");</script>");
+			}
+		
+	}
+	if (del != null && cod != null) {
+		
+		l.setId(cod);
+		LaminaCRUD lc = new LaminaCRUD();
+		if (lc.delete(l)) {
+			out.print("<script>alert(\"Lamina deletada com sucesso!\");</script>");
+		} else {
+			out.print("<script>alert(\"Erro ao deletar Lamina!!\");</script>");
+		}
+	}
+	
+	
 %>
 <body>
 
@@ -140,12 +202,17 @@
 				<h1 class="mt-4">Cadastro de Lâmina</h1>
 				<p>Informe abaixo as informações da lâmina a ser cadastrada.</p>
 				<p></p>
-				<form>
+				<form method="POST" action="LaminaCadastro.jsp?<%if(up!=null){out.print("up=2&cod="+cod);}else{out.print("cad=0");}%>">
 					<div class="form-row col-md-6">
 						<div class="form-group my-1 mr-2">
-							<label for="inputCdTubo">Código da lâmina (Tubo)</label> <input
-								type="text" class="form-control" id="inputCdTubo" name="codTubo"
-								placeholder="Código Tubo">
+							<label for="inputCdTubo">Código da lâmina (Tubo)</label> 
+								<%
+								if(cod!=null){
+									out.print("<input type=\"text\" class=\"form-control\" id=\"inputCdTubo\" name=\"codTubo\" placeholder=\"Código Tubo\" value=\"" + l.getCodigoTubo() + "\">");
+								}else{		
+									out.print("<textarea class=\"form-control\" rows=\"5\" id=\"descricao\" name=\"descDiagnostico\"></textarea>");
+								}
+							%>		
 						</div>
 					</div>
 					<div class="form-row col-md-6">
@@ -158,41 +225,88 @@
 
 								listaSetor = sc.select();
 
-								for (int i = 0; i < listaSetor.size(); i++) {
-									out.print("<option value=\"" + listaSetor.get(i).getCodSetor() + "\">"
+								if(cod!=null){
+									for (int i = 0; i < listaSetor.size(); i++) {
+										if(listaSetor.get(i).getCodSetor().equals(l.getCodSetor())){
+											out.print("<option selected value=\"" + listaSetor.get(i).getCodSetor() + "\">"
+													+ listaSetor.get(i).getDescSetor() + "</option>");											
+										}else{
+											out.print("<option value=\"" + listaSetor.get(i).getCodSetor() + "\">"
+												+ listaSetor.get(i).getDescSetor() + "</option>");
+										}
+									}									
+								}else{		
+									out.print("<option selected disabled>Selecione...</option>");
+									for (int i = 0; i < listaSetor.size(); i++) {
+										out.print("<option value=\"" + listaSetor.get(i).getCodSetor() + "\">"
 											+ listaSetor.get(i).getDescSetor() + "</option>");
+									}
 								}
 							%>
-							<option selected disabled>Selecione...</option>
-							<option value="1">Microscopia</option>
-							<option value="2">Microbiologia</option>
-							<option value="3">Líquidos</option>
 						</select>
 					</div>
 					<div class="form-row col-md-6">
 						<label class="my-1 mr-2" for="selectMaterial">Material</label> <select
-							class="custom-select my-1 mr-sm-2" id="selectMaterial">
-							<option selected disabled>Selecione...</option>
-							<option value="1">Líquido Pleural</option>
-							<option value="2">Líquido de Ascite</option>
-							<option value="3">Líquido de Diálise</option>
-							<option value="3">Líquido Pericárdico</option>
+							class="custom-select my-1 mr-sm-2" id="selectMaterial" name="material">
+							<%
+								MaterialCRUD mc = new MaterialCRUD();
+								List<Material> listaMaterial = new ArrayList();
+
+								listaMaterial= mc.select();
+
+								if(cod!=null){
+									for (int i = 0; i < listaMaterial.size(); i++) {
+										if(listaMaterial.get(i).getCodMaterial().equals(l.getCodMaterial())){
+											out.print("<option selected value=\"" + listaMaterial.get(i).getCodMaterial() + "\">"
+													+ listaMaterial.get(i).getDescMaterial() + "</option>");											
+										}else{
+											out.print("<option value=\"" + listaMaterial.get(i).getCodMaterial() + "\">"
+												+ listaMaterial.get(i).getDescMaterial() + "</option>");
+										}
+									}									
+								}else{		
+									out.print("<option selected disabled>Selecione...</option>");
+									for (int i = 0; i < listaMaterial.size(); i++) {
+										out.print("<option value=\"" + listaMaterial.get(i).getCodMaterial() + "\">"
+											+ listaMaterial.get(i).getDescMaterial() + "</option>");
+									}
+								}
+							%>
 						</select>
 					</div>
 					<div class="form-row col-md-6">
 						<label class="my-1 mr-2" for="selectMaleta">Maleta</label> <select
-							class="custom-select my-1 mr-sm-2" id="selectMaleta">
-							<option selected disabled>Selecione...</option>
-							<option value="1">Maleta 1</option>
-							<option value="2">Maleta 2</option>
-							<option value="3">Maleta 3</option>
-							<option value="3">Maleta 4</option>
+							class="custom-select my-1 mr-sm-2" id="selectMaleta" name="maleta">
+							<%
+								MaletaCRUD mac = new MaletaCRUD();
+								List<Maleta> listaMaleta = new ArrayList();
+
+								listaMaleta = mac.select();
+
+								if(cod!=null){
+									for (int i = 0; i < listaMaleta.size(); i++) {
+										if(listaMaleta.get(i).getCodMaleta().equals(l.getCodMaleta())){
+											out.print("<option selected value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
+													+ listaMaleta.get(i).getDescMaleta() + "</option>");											
+										}else{
+											out.print("<option value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
+												+ listaMaleta.get(i).getDescMaleta() + "</option>");
+										}
+									}									
+								}else{		
+									out.print("<option selected disabled>Selecione...</option>");
+									for (int i = 0; i < listaMaleta.size(); i++) {
+										out.print("<option value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
+											+ listaMaleta.get(i).getDescMaleta() + "</option>");
+									}
+								}
+							%>
 						</select>
 					</div>
 					<div class="form-row col-md-6">
 						<label class="my-1 mr-2" for="selectPosicaoMaleta">Posição
 							na Maleta</label> <select class="custom-select my-1 mr-sm-2"
-							id="selectPosicaoMaleta">
+							id="selectPosicaoMaleta" name="posicao">
 							<option selected disabled>Selecione...</option>
 							<option value="1">Posição 1</option>
 							<option value="2">Posição 2</option>
@@ -201,9 +315,14 @@
 						</select>
 					</div>
 					<div class="form-row col-md-10">
-						<label class="my-1 mr-2" for="selectPosicaoMaleta">Descrição
-							do diagnóstico</label>
-						<textarea class="form-control" rows="5" id="descricao"></textarea>
+						<label class="my-1 mr-2" for="selectPosicaoMaleta">Descrição do diagnóstico</label>
+						<%
+								if(cod!=null){
+									out.print("<textarea class=\"form-control\" rows=\"5\" id=\"descricao\" name=\"descDiagnostico\">" + l.getDescDiagnostico() + "</textarea>");
+								}else{		
+									out.print("<textarea class=\"form-control\" rows=\"5\" id=\"descricao\" name=\"descDiagnostico\"></textarea>");
+								}
+							%>						
 					</div>
 					<div class="form-row col-md-6">
 						<button type="submit" class="btn btn-success">Cadastrar</button>
