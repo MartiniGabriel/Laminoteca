@@ -18,7 +18,7 @@ public class LaminaCRUD {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into LAMINA");
 		sql.append(
-				" (codTubo, codSetor, codMaterial, descDiagnostico, codMaleta, codPosicao) values (");
+				" (codTubo, codSetor, codMaterial, descDiagnostico, codPosicao) values (");
 	
 		Connection conn = Conexao.getConexaoMySQL();
 
@@ -30,8 +30,6 @@ public class LaminaCRUD {
 		sql.append(l.getCodMaterial());
 		sql.append("\', \'");
 		sql.append(l.getDescDiagnostico());
-		sql.append("\', \'");
-		sql.append(l.getCodMaleta());
 		sql.append("\', \'");
 		sql.append(l.getCodPosicao());
 		sql.append("\');");
@@ -68,8 +66,6 @@ public class LaminaCRUD {
 		sql.append(l.getCodMaterial());
 		sql.append("\', descDiagnostico = \'");
 		sql.append(l.getDescDiagnostico());
-		sql.append("\', codMaleta = \'");
-		sql.append(l.getCodMaleta());
 		sql.append("\', codPosicao = \'");
 		sql.append(l.getCodPosicao());
 		sql.append("\'"
@@ -130,7 +126,7 @@ public class LaminaCRUD {
 	public List<Lamina> select() {
 		System.out.println("teste");
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT l.id, l.codTubo, l.codSetor, s.descSetor, l.codMaterial, m.descMaterial, l.descDiagnostico, l.dataCadastro, l.codMaleta, l.codPosicao \r\n" + 
+		sql.append("SELECT l.id, l.codTubo, l.codSetor, s.descSetor, l.codMaterial, m.descMaterial, l.descDiagnostico, l.dataCadastro, l.codPosicao \r\n" + 
 				"from lamina l \r\n" + 
 				"	JOIN material m\r\n" + 
 				"		ON m.id = l.codMaterial\r\n" + 
@@ -158,7 +154,6 @@ public class LaminaCRUD {
 			linha.setDescMaterial(resultado.getString("descMaterial"));
 			linha.setDescDiagnostico(resultado.getString("descDiagnostico"));
 			linha.setDataCadastro(resultado.getString("dataCadastro"));
-			linha.setCodMaleta(resultado.getString("codMaleta"));
 			linha.setCodPosicao(resultado.getString("codPosicao"));
 			lista.add(linha);
 		}

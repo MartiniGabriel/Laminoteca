@@ -7,6 +7,7 @@ public class Maleta {
 	String qtdPosicoes;
 	String codPosicao;
 	String statusPosicao;
+	int id;
 	
 	public String getCodMaleta() {
 		return codMaleta;
@@ -37,6 +38,12 @@ public class Maleta {
 	}
 	public void setStatusPosicao(String statusPosicao) {
 		this.statusPosicao = statusPosicao;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

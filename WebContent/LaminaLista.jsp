@@ -1,7 +1,9 @@
 <%@page import="Aplicacao.Lamina"%>
+<%@page import="Aplicacao.Maleta"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="CRUD.LaminaCRUD"%>
+<%@page import="CRUD.MaletaCRUD"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
@@ -155,7 +157,6 @@
 									<th scope="col">Setor</th>
 									<th scope="col">Material</th>
 									<th scope="col">Diagnóstico</th>
-									<th scope="col">Maleta</th>
 									<th scope="col">Posição</th>
 									<th scope="col">Alterar</th>
 									<th scope="col">Excluir</th>
@@ -163,15 +164,19 @@
 							</thead>
 							<tbody>
 								<%
-									for (int i = 0; i < lista.size(); i++) {
+	
+								for (int i = 0; i < lista.size(); i++) {
+									MaletaCRUD mc = new MaletaCRUD();
+									Maleta m = new Maleta();
+										m = mc.selectMaletaPorPosicao(lista.get(i).getCodPosicao());
+								
 										out.print("<tr>");
 										out.print("<th scope=\"row\">" + lista.get(i).getId() + "</th>");
 										out.print("<td>" + lista.get(i).getCodigoTubo() + "</td>");
 										out.print("<td>" + lista.get(i).getDescSetor() + "</td>");
 										out.print("<td>" + lista.get(i).getDescMaterial() + "</td>");
 										out.print("<td>" + lista.get(i).getDescDiagnostico() + "</td>");
-										out.print("<td>" + "Maleta " + lista.get(i).getCodMaleta() + "</td>");
-										out.print("<td>" + "Posição " + lista.get(i).getCodPosicao() + "</td>");
+										out.print("<td>" + m.getDescMaleta() + " | Posição " + m.getCodPosicao() + "</td>");
 										out.write("<td><a href=\"LaminaCadastro.jsp?up=0&cod=" + lista.get(i).getId()
 												+ "\"><button type=\"button\" class=\"btn btn-primary\">Alterar</button></a></td>");
 										out.write("<td><a href=\"LaminaCadastro.jsp?del=0&cod=" + lista.get(i).getId()

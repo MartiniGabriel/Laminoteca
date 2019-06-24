@@ -35,8 +35,7 @@
 	String codTubo = request.getParameter("codTubo");
 	String codSetor = request.getParameter("setor");
 	String codMaterial = request.getParameter("material");
-	String codMaleta = request.getParameter("maleta");
-	String codPosicao = request.getParameter("posicao");
+	String codPosicao = request.getParameter("maleta");
 	String descDiagnostico = request.getParameter("descDiagnostico");
 	
 	String cad = request.getParameter("cad");
@@ -58,12 +57,13 @@
 		l.setCodigoTubo(codTubo);
 		l.setCodSetor(codSetor);
 		l.setCodMaterial(codMaterial);
-		l.setCodMaleta(codMaleta);
 		l.setCodPosicao(codPosicao);
 		l.setDescDiagnostico(descDiagnostico);
 		
 		LaminaCRUD lc = new LaminaCRUD();
+		MaletaCRUD mc = new MaletaCRUD();
 		if (lc.insert(l)) {
+			mc.updatePosicao(l.getCodPosicao(), "Ocupado");
 			out.print("<script>alert(\"Lamina cadastrada com sucesso!\");</script>");
 		} else {
 			out.print("<script>alert(\"Erro ao cadastrar lamina!!\");</script>");
@@ -71,14 +71,25 @@
 	}
 	if (cod != null && codTubo != null && up.equals("2")) {
 		
+		Lamina lt = new Lamina();
+		LaminaCRUD lc = new LaminaCRUD();
+		MaletaCRUD mc = new MaletaCRUD();
+		
 		l.setCodigoTubo(codTubo);
 		l.setCodSetor(codSetor);
 		l.setCodMaterial(codMaterial);
-		l.setCodMaleta(codMaleta);
 		l.setCodPosicao(codPosicao);
 		l.setDescDiagnostico(descDiagnostico);
 		
-		LaminaCRUD lc = new LaminaCRUD();
+		lt = lc.buscaLamina(l);
+		System.out.println("POsição antiga: " + lt.getCodPosicao() + " posição autal: " + l.getCodPosicao());
+		if(lt.getCodPosicao().equals(l.getCodPosicao())){
+			
+		}else{
+			mc.updatePosicao(lt.getCodPosicao(), "Disponível");
+			mc.updatePosicao(l.getCodPosicao(), "Ocupado");
+		}
+		
 			if (lc.update(l)) {
 				out.print("<script>alert(\"Lamina atualizada com sucesso!\");</script>");
 			} else {
@@ -87,10 +98,11 @@
 		
 	}
 	if (del != null && cod != null) {
-		
 		l.setId(cod);
 		LaminaCRUD lc = new LaminaCRUD();
+		MaletaCRUD mc = new MaletaCRUD();
 		if (lc.delete(l)) {
+			mc.updatePosicao(l.getCodPosicao(), "Disponivel");
 			out.print("<script>alert(\"Lamina deletada com sucesso!\");</script>");
 		} else {
 			out.print("<script>alert(\"Erro ao deletar Lamina!!\");</script>");
@@ -210,7 +222,7 @@
 								if(cod!=null){
 									out.print("<input type=\"text\" class=\"form-control\" id=\"inputCdTubo\" name=\"codTubo\" placeholder=\"Código Tubo\" value=\"" + l.getCodigoTubo() + "\">");
 								}else{		
-									out.print("<textarea class=\"form-control\" rows=\"5\" id=\"descricao\" name=\"descDiagnostico\"></textarea>");
+									out.print("<input type=\"text\" class=\"form-control\" id=\"inputCdTubo\" name=\"codTubo\" placeholder=\"Código Tubo\" \">");
 								}
 							%>		
 						</div>
@@ -275,7 +287,7 @@
 						</select>
 					</div>
 					<div class="form-row col-md-6">
-						<label class="my-1 mr-2" for="selectMaleta">Maleta</label> <select
+						<label class="my-1 mr-2" for="selectMaleta">Maleta | Posição</label> <select
 							class="custom-select my-1 mr-sm-2" id="selectMaleta" name="maleta">
 							<%
 								MaletaCRUD mac = new MaletaCRUD();
@@ -285,33 +297,26 @@
 
 								if(cod!=null){
 									for (int i = 0; i < listaMaleta.size(); i++) {
-										if(listaMaleta.get(i).getCodMaleta().equals(l.getCodMaleta())){
-											out.print("<option selected value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
-													+ listaMaleta.get(i).getDescMaleta() + "</option>");											
+										if(Integer.toString(listaMaleta.get(i).getId()).equals(l.getCodPosicao())){
+											out.print("<option selected value=\"" + listaMaleta.get(i).getId() + "\">"
+													+ listaMaleta.get(i).getDescMaleta() + " | Posição " + listaMaleta.get(i).getCodPosicao() + "</option>");											
 										}else{
-											out.print("<option value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
-												+ listaMaleta.get(i).getDescMaleta() + "</option>");
-										}
+											if(listaMaleta.get(i).getStatusPosicao().equals("Disponível")){
+											out.print("<option value=\"" + listaMaleta.get(i).getId() + "\">"
+													+ listaMaleta.get(i).getDescMaleta() + " | Posição " + listaMaleta.get(i).getCodPosicao() + "</option>");		
+											}
+											}
 									}									
 								}else{		
 									out.print("<option selected disabled>Selecione...</option>");
 									for (int i = 0; i < listaMaleta.size(); i++) {
-										out.print("<option value=\"" + listaMaleta.get(i).getCodMaleta() + "\">"
-											+ listaMaleta.get(i).getDescMaleta() + "</option>");
+										if(listaMaleta.get(i).getStatusPosicao().equals("Disponível")){
+											out.print("<option value=\"" + listaMaleta.get(i).getId() + "\">"
+													+ listaMaleta.get(i).getDescMaleta() + " | Posição " + listaMaleta.get(i).getCodPosicao() + "</option>");	
+										}
 									}
 								}
 							%>
-						</select>
-					</div>
-					<div class="form-row col-md-6">
-						<label class="my-1 mr-2" for="selectPosicaoMaleta">Posição
-							na Maleta</label> <select class="custom-select my-1 mr-sm-2"
-							id="selectPosicaoMaleta" name="posicao">
-							<option selected disabled>Selecione...</option>
-							<option value="1">Posição 1</option>
-							<option value="2">Posição 2</option>
-							<option value="3">Posição 3</option>
-							<option value="3">Posição 4</option>
 						</select>
 					</div>
 					<div class="form-row col-md-10">
@@ -323,6 +328,9 @@
 									out.print("<textarea class=\"form-control\" rows=\"5\" id=\"descricao\" name=\"descDiagnostico\"></textarea>");
 								}
 							%>						
+					</div>
+					<div class="form-row col-md-6">
+						&nbsp;
 					</div>
 					<div class="form-row col-md-6">
 						<button type="submit" class="btn btn-success">Cadastrar</button>

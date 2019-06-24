@@ -28,7 +28,7 @@
 	MaletaCRUD mc = new MaletaCRUD();
 	List<Maleta> lista = new ArrayList();
 
-	lista = mc.select();
+	lista = mc.selectMaletas();
 %>
 <body>
 
@@ -137,8 +137,6 @@
 						<tr>
 							<th scope="col">ID</th>
 							<th scope="col">Descrição</th>
-							<th scope="col">Qtd Posições</th>
-							<th scope="col">Alterar</th>
 							<th scope="col">Excluir</th>
 						</tr>
 					</thead>
@@ -148,8 +146,6 @@
 								out.print("<tr>");
 								out.print("<th scope=\"row\">" + lista.get(i).getCodMaleta() + "</th>");
 								out.print("<td>" + lista.get(i).getDescMaleta() + "</td>");
-								out.print("<td>"+lista.get(i).getQtdPosicoes()+"</td>");
-								out.write("<td><a href=\"MaletaCadastro.jsp?up=0&cod=" + lista.get(i).getCodMaleta() + "\"><button type=\"button\" class=\"btn btn-primary\">Alterar</button></a></td>");
 								out.write("<td><a href=\"MaletaCadastro.jsp?del=0&cod=" + lista.get(i).getCodMaleta() + "\"><button type=\"button\" class=\"btn btn-danger\">Excluir</button></a></td>");								
 								out.print("</tr>");
 							}

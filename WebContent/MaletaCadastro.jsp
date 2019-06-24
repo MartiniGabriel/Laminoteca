@@ -38,7 +38,8 @@
 		m.setDescMaleta(descMaleta);
 		m.setQtdPosicoes(qtdPosicoes);
 		MaletaCRUD mc = new MaletaCRUD();
-		if (mc.insert(m)) {
+		m.setCodMaleta(Integer.toString(Integer.parseInt(mc.getUltimaMaleta())+1));
+		if (mc.insertPosicoesMaleta(m)) {
 			out.print("<script>alert(\"Maleta cadastrado com sucesso!\");</script>");
 		} else {
 			out.print("<script>alert(\"Erro ao cadastrar maleta!!\");</script>");
