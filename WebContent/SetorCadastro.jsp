@@ -35,9 +35,9 @@
 		s.setDescSetor(descSetor);
 		SetorCRUD sc = new SetorCRUD();
 		if (sc.insert(s)) {
-			out.print("<script>alert(\"Setor cadastrado com sucesso!\");</script>");
+			out.print("<script>alert(\"Setor cadastrado com sucesso!\");window.location.href='SetorLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao cadastrar setor!!\");</script>");
+			out.print("<script>alert(\"Erro ao cadastrar setor!!\");window.location.href='SetorLista.jsp'</script>");
 		}
 	}
 	if (cod != null && descSetor != null && up.equals("2")) {
@@ -46,9 +46,9 @@
 		s.setCodSetor(cod);
 		SetorCRUD sc = new SetorCRUD();
 			if (sc.update(s)) {
-				out.print("<script>alert(\"Setor atualizado com sucesso!\");</script>");
+				out.print("<script>alert(\"Setor atualizado com sucesso!\");window.location.href='SetorLista.jsp'</script>");
 			} else {
-				out.print("<script>alert(\"Erro ao atualizar setor!!\");</script>");
+				out.print("<script>alert(\"Erro ao atualizar setor!!\");window.location.href='SetorLista.jsp'</script>");
 			}
 		
 	}
@@ -58,9 +58,9 @@
 		s.setCodSetor(cod);
 		SetorCRUD sc = new SetorCRUD();
 		if (sc.delete(s)) {
-			out.print("<script>alert(\"Setor deletado com sucesso!\");</script>");
+			out.print("<script>alert(\"Setor deletado com sucesso!\");window.location.href='SetorLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao deletado setor!!\");</script>");
+			out.print("<script>alert(\"Erro ao deletado setor!!\");window.location.href='SetorLista.jsp'</script>");
 		}
 	}
 %>

@@ -64,9 +64,9 @@
 		MaletaCRUD mc = new MaletaCRUD();
 		if (lc.insert(l)) {
 			mc.updatePosicao(l.getCodPosicao(), "Ocupado");
-			out.print("<script>alert(\"Lamina cadastrada com sucesso!\");</script>");
+			out.print("<script>alert(\"Lamina cadastrada com sucesso!\");window.location.href='LaminaLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao cadastrar lamina!!\");</script>");
+			out.print("<script>alert(\"Erro ao cadastrar lamina!!\");window.location.href='LaminaLista.jsp'</script>");
 		}
 	}
 	if (cod != null && codTubo != null && up.equals("2")) {
@@ -91,9 +91,9 @@
 		}
 		
 			if (lc.update(l)) {
-				out.print("<script>alert(\"Lamina atualizada com sucesso!\");</script>");
+				out.print("<script>alert(\"Lamina atualizada com sucesso!\");window.location.href='LaminaLista.jsp'</script>");
 			} else {
-				out.print("<script>alert(\"Erro ao atualizar Lamina!!\");</script>");
+				out.print("<script>alert(\"Erro ao atualizar Lamina!!\");window.location.href='LaminaLista.jsp'</script>");
 			}
 		
 	}
@@ -103,9 +103,9 @@
 		MaletaCRUD mc = new MaletaCRUD();
 		if (lc.delete(l)) {
 			mc.updatePosicao(l.getCodPosicao(), "Disponivel");
-			out.print("<script>alert(\"Lamina deletada com sucesso!\");</script>");
+			out.print("<script>alert(\"Lamina deletada com sucesso!\");window.location.href='LaminaLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao deletar Lamina!!\");</script>");
+			out.print("<script>alert(\"Erro ao deletar Lamina!!\");window.location.href='LaminaLista.jsp'</script>");
 		}
 	}
 	

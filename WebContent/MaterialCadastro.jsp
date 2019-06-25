@@ -37,9 +37,9 @@
 		m.setDescMaterial(descMaterial);
 		MaterialCRUD mc = new MaterialCRUD();
 		if (mc.insert(m)) {
-			out.print("<script>alert(\"Material cadastrado com sucesso!\");</script>");
+			out.print("<script>alert(\"Material cadastrado com sucesso!\");window.location.href='MaterialLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao cadastrar material!!\");</script>");
+			out.print("<script>alert(\"Erro ao cadastrar material!!\");window.location.href='MaterialLista.jsp'</script>");
 		}
 	}
 	if (cod != null && descMaterial != null && up.equals("2")) {
@@ -48,9 +48,9 @@
 		m.setCodMaterial(cod);
 		MaterialCRUD sc = new MaterialCRUD();
 			if (sc.update(m)) {
-				out.print("<script>alert(\"Material atualizado com sucesso!\");</script>");
+				out.print("<script>alert(\"Material atualizado com sucesso!\");window.location.href='MaterialLista.jsp'</script>");
 			} else {
-				out.print("<script>alert(\"Erro ao atualizar material!!\");</script>");
+				out.print("<script>alert(\"Erro ao atualizar material!!\");window.location.href='MaterialLista.jsp'</script>");
 			}
 		
 	}
@@ -60,9 +60,9 @@
 		m.setCodMaterial(cod);
 		MaterialCRUD mc = new MaterialCRUD();
 		if (mc.delete(m)) {
-			out.print("<script>alert(\"Material deletado com sucesso!\");</script>");
+			out.print("<script>alert(\"Material deletado com sucesso!\");window.location.href='MaterialLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao deletar material!!\");</script>");
+			out.print("<script>alert(\"Erro ao deletar material!!\");window.location.href='MaterialLista.jsp'</script>");
 		}
 	}
 %>

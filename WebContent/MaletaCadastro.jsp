@@ -40,9 +40,9 @@
 		MaletaCRUD mc = new MaletaCRUD();
 		m.setCodMaleta(Integer.toString(Integer.parseInt(mc.getUltimaMaleta())+1));
 		if (mc.insertPosicoesMaleta(m)) {
-			out.print("<script>alert(\"Maleta cadastrado com sucesso!\");</script>");
+			out.print("<script>alert(\"Maleta cadastrado com sucesso!\");window.location.href='MaletaLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao cadastrar maleta!!\");</script>");
+			out.print("<script>alert(\"Erro ao cadastrar maleta!!\");window.location.href='MaletaLista.jsp'</script>");
 		}
 	}
 	if (cod != null && descMaleta != null && up.equals("2")) {
@@ -51,9 +51,9 @@
 		m.setCodMaleta(cod);
 		MaletaCRUD sc = new MaletaCRUD();
 			if (sc.update(m)) {
-				out.print("<script>alert(\"Maleta atualizada com sucesso!\");</script>");
+				out.print("<script>alert(\"Maleta atualizada com sucesso!\");window.location.href='MaletaLista.jsp'</script>");
 			} else {
-				out.print("<script>alert(\"Erro ao atualizar maleta!!\");</script>");
+				out.print("<script>alert(\"Erro ao atualizar maleta!!\");window.location.href='MaletaLista.jsp'</script>");
 			}
 		
 	}
@@ -63,9 +63,9 @@
 		m.setCodMaleta(cod);
 		MaletaCRUD mc = new MaletaCRUD();
 		if (mc.delete(m)) {
-			out.print("<script>alert(\"Maleta deletada com sucesso!\");</script>");
+			out.print("<script>alert(\"Maleta deletada com sucesso!\");window.location.href='MaletaLista.jsp'</script>");
 		} else {
-			out.print("<script>alert(\"Erro ao deletar maleta!!\");</script>");
+			out.print("<script>alert(\"Erro ao deletar maleta!!\");window.location.href='MaletaLista.jsp'</script>");
 		}
 	}
 %>
