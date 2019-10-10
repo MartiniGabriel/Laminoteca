@@ -37,6 +37,7 @@
 	String codMaterial = request.getParameter("material");
 	String codPosicao = request.getParameter("maleta");
 	String descDiagnostico = request.getParameter("descDiagnostico");
+	String nome = request.getParameter("nome");
 	
 	String cad = request.getParameter("cad");
 	String up = request.getParameter("up");
@@ -59,6 +60,7 @@
 		l.setCodMaterial(codMaterial);
 		l.setCodPosicao(codPosicao);
 		l.setDescDiagnostico(descDiagnostico);
+		l.setNome(nome);
 		
 		LaminaCRUD lc = new LaminaCRUD();
 		MaletaCRUD mc = new MaletaCRUD();
@@ -80,9 +82,10 @@
 		l.setCodMaterial(codMaterial);
 		l.setCodPosicao(codPosicao);
 		l.setDescDiagnostico(descDiagnostico);
+		l.setNome(nome);
 		
 		lt = lc.buscaLamina(l);
-		System.out.println("POsição antiga: " + lt.getCodPosicao() + " posição autal: " + l.getCodPosicao());
+		System.out.println("Posição antiga: " + lt.getCodPosicao() + " posição autal: " + l.getCodPosicao());
 		if(lt.getCodPosicao().equals(l.getCodPosicao())){
 			
 		}else{
@@ -223,6 +226,18 @@
 									out.print("<input type=\"text\" class=\"form-control\" id=\"inputCdTubo\" name=\"codTubo\" placeholder=\"Código Tubo\" value=\"" + l.getCodigoTubo() + "\">");
 								}else{		
 									out.print("<input type=\"text\" class=\"form-control\" id=\"inputCdTubo\" name=\"codTubo\" placeholder=\"Código Tubo\" \">");
+								}
+							%>		
+						</div>
+					</div>
+					<div class="form-row col-md-6">
+						<div class="form-group my-1 mr-sm-2">
+							<label for="inputCdTubo">Nome do paciente</label> 
+								<%
+								if(cod!=null){
+									out.print("<input type=\"text\" class=\"form-control\" id=\"inputNome\" name=\"nome\" placeholder=\"Nome do Paciente\" value=\"" + l.getNome() + "\">");
+								}else{		
+									out.print("<input type=\"text\" class=\"form-control\" id=\"inputNome\" name=\"nome\" placeholder=\"Nome do Paciente\" \">");
 								}
 							%>		
 						</div>

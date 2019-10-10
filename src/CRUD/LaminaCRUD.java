@@ -18,7 +18,7 @@ public class LaminaCRUD {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into LAMINA");
 		sql.append(
-				" (codTubo, codSetor, codMaterial, descDiagnostico, codPosicao) values (");
+				" (codTubo, codSetor, codMaterial, descDiagnostico, codPosicao, nome) values (");
 	
 		Connection conn = Conexao.getConexaoMySQL();
 
@@ -32,6 +32,8 @@ public class LaminaCRUD {
 		sql.append(l.getDescDiagnostico());
 		sql.append("\', \'");
 		sql.append(l.getCodPosicao());
+		sql.append("\', \'");
+		sql.append(l.getNome());
 		sql.append("\');");
 
 		System.out.println(sql.toString());
@@ -68,6 +70,8 @@ public class LaminaCRUD {
 		sql.append(l.getDescDiagnostico());
 		sql.append("\', codPosicao = \'");
 		sql.append(l.getCodPosicao());
+		sql.append("\', nome = \'");
+		sql.append(l.getNome());
 		sql.append("\'"
 				+ " where id = "
 				+  l.getId() 
@@ -126,7 +130,7 @@ public class LaminaCRUD {
 	public List<Lamina> select() {
 		System.out.println("teste");
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT l.id, l.codTubo, l.codSetor, s.descSetor, l.codMaterial, m.descMaterial, l.descDiagnostico, l.dataCadastro, l.codPosicao \r\n" + 
+		sql.append("SELECT l.id, l.codTubo, l.codSetor, s.descSetor, l.codMaterial, m.descMaterial, l.descDiagnostico, l.dataCadastro, l.codPosicao, l.nome \r\n" + 
 				"from lamina l \r\n" + 
 				"	JOIN material m\r\n" + 
 				"		ON m.id = l.codMaterial\r\n" + 
@@ -155,6 +159,7 @@ public class LaminaCRUD {
 			linha.setDescDiagnostico(resultado.getString("descDiagnostico"));
 			linha.setDataCadastro(resultado.getString("dataCadastro"));
 			linha.setCodPosicao(resultado.getString("codPosicao"));
+			linha.setNome(resultado.getString("nome"));
 			lista.add(linha);
 		}
 

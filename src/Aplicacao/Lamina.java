@@ -3,6 +3,7 @@ package Aplicacao;
 public class Lamina {
 	
 	String id;
+	String nome;
 	String codigoTubo;
 	String codSetor;
 	String descSetor;
@@ -13,7 +14,12 @@ public class Lamina {
 	String codMaleta;
 	String codPosicao;
 	
-	
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	public String getId() {
 		return id;
 	}

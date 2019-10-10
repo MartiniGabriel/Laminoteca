@@ -155,7 +155,7 @@
 									<th scope="col">ID</th>
 									<th scope="col">Código Tubo</th>
 									<th scope="col">Setor</th>
-									<th scope="col">Material</th>
+									<th scope="col">Paciente</th>
 									<th scope="col">Diagnóstico</th>
 									<th scope="col">Posição</th>
 									<th scope="col">Alterar</th>
@@ -174,7 +174,7 @@
 										out.print("<th scope=\"row\">" + lista.get(i).getId() + "</th>");
 										out.print("<td>" + lista.get(i).getCodigoTubo() + "</td>");
 										out.print("<td>" + lista.get(i).getDescSetor() + "</td>");
-										out.print("<td>" + lista.get(i).getDescMaterial() + "</td>");
+										out.print("<td>" + lista.get(i).getNome() + "</td>");
 										out.print("<td>" + lista.get(i).getDescDiagnostico() + "</td>");
 										out.print("<td>" + m.getDescMaleta() + " | Posição " + m.getCodPosicao() + "</td>");
 										out.write("<td><a href=\"LaminaCadastro.jsp?up=0&cod=" + lista.get(i).getId()

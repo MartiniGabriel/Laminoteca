@@ -22,11 +22,11 @@ public static java.sql.Connection getConexaoMySQL() {
     	String driverName = "com.mysql.jdbc.Driver";                        
         Class.forName(driverName);
  
-            String serverName = "localhost";
+            String serverName = "127.0.0.1";
             String mydatabase = "laminoteca";
             String url = "jdbc:mysql://" + serverName + "/" + mydatabase + "?useTimezone=true&serverTimezone=UTC";
             String username = "root";
-            String password = "12345";
+            String password = "";
             connection = (Connection) DriverManager.getConnection(url, username, password);
      
 
